@@ -1,0 +1,238 @@
+{% extends 'doctor/doctor_main.html' %}
+{% load static %}
+
+{% block content %}
+   <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+   <!--icon font css-->
+   <link rel="stylesheet" href="{% static 'vendor/themify-icons.css' %}">
+   <link rel="stylesheet" href="{% static 'vendor/flaticon.css' %}">
+   <link rel="stylesheet" href="{% static 'vendor/animate.css' %}">
+   <link rel="stylesheet" href="{% static 'vendor/owl.carousel.min.css' %}">
+   <link rel="stylesheet" href="{% static 'vendor/magnific-popup.css' %}">
+   <link rel="stylesheet" href="{% static 'vendor/nice-select.css' %}">
+   <link rel="stylesheet" href="{% static 'vendor/all.css' %}">
+   <link rel="stylesheet" href="{% static 'vendor/styleblog.css' %}">
+   <link rel="stylesheet" href="{% static 'vendor/jquery.mCustomScrollbar.min.css' %}">
+   <link rel="stylesheet" href="{% static 'vendor/styleblog2.css' %}">
+   <link rel="stylesheet" href="{% static 'vendor/responsive.css' %}">
+<main>
+<section class="blog_area sec_pad" style="margin-top:-8%;">
+    <div class="container">
+        <h1>Blog Posts </h1>
+        <div class="row">
+            <div class="col-lg-8">
+
+                <div class="blog_list_item mb_50">
+                    <img class="img-fluid" src="{{post.thumbnail.url}}" alt="" style="height:100%;width:100%;">
+                    <div class="blog_content">
+                        <div class="post_date">
+                            <h2>{{post.posted_at|date:'d'}} <span>{{post.posted_at|date:'F'}}</span></h2>
+                        </div>
+                        <div class="entry_post_info">
+                            By: <a href="#">{{post.user}}</a>
+                            
+                            <a href="#">{{post.category}}</a>
+                        </div>
+                        <a href="#">
+                            <h5 class="f_p f_size_20 f_500 t_color mb_20">Title : &nbsp;{{post.title}}</h5>
+                        </a>
+                        <p class="f_400 mb-30">{{post.description | safe}}</p>
+                        <a href="#">
+                            <h5 class="f_p f_size_20 f_500 t_color mb_20">Summary </h5>
+                            <p class="f_400 mb-30">{{post.summary | safe}}</p>
+                        </a>
+                        
+                    </div>
+                </div>
+
+
+                <!-- End Recent Posts -->
+            <div class="blog_post">
+                <div class="widget_title">
+                    <h3 class="f_p f_size_20 t_color3">Related Post</h3>
+                    <div class="border_bottom"></div>
+                </div>
+
+                <div class="row">
+
+                    {% for post in related_posts %}
+                      
+                    
+                    
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="blog_post_item">
+                            <div class="blog_img">
+                                <a href="/post/{{post.title}}">
+                                <img src="{{post.thumbnail.url}}" alt=""></a>
+                            </div>
+                            <div class="blog_content">
+                                <div class="entry_post_info">
+                                    <a href="#">{{post.posted_at}}</a>
+                                </div>
+                                <a href="/post/{{post.title}}#">
+                                    <h5 class="f_p f_size_16 f_500 t_color">{{post.title}}</h5>
+                                </a>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if posts.has_previous %}
+                                <a href="?page=1">&laquo;First</a>
+                                <a href="?page={{ posts.previous_page_number }}">Previous</a>
+                            {% endif %}
+                    
+                            <span class="current">
+                                Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+                            </span>
+                    
+                            {% if posts.has_next %}
+                                <a href="?page={{ posts.next_page_number }}">Next</a>
+                                <a href="?page={{ posts.paginator.num_pages }}">Last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+                <!-- End Recent Posts -->
+
+                <!-- Comment -->
+
+                <div class="widget_title mt_100">
+                    <h3 class="f_p f_size_20 t_color3"> Comments( {{ comments.count }} )</h3>
+                    <div class="border_bottom"></div>
+                </div>
+                <ul class="comment-box list-unstyled mb-0">
+                    
+                    {% for comment in comments %}
+                      
+                    
+                    <li class="post_comment">
+                        <div class="media post_author mt_60">
+                            <div class="media-left">
+                                <img class="rounded-circle" src="{% static 'img/comment1.png' %}" alt="">
+                                <a href="#" class="replay"><i class="ti-share"></i></a>
+                            </div>
+                            <div class="media-body">
+                                <h5 class="f_p t_color3 f_size_18 f_500">{{comment.name}}</h5>
+                                <h6 class="f_p f_size_15 f_400 mb_20">{{comment.commented_at}}</h6>
+                                <p>{{comment.comment}}</p>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                
+                <!-- Comment Form section -->
+                <div class="widget_title mt_100">
+                    <h3 class="f_p f_size_20 t_color3">Leave a Comment</h3>
+                    <div class="border_bottom"></div>
+                </div>
+
+                <form class="get_quote_form row" action="{% url 'comment' %}" method="post"> {% csrf_token %}
+                    <div class="col-md-12 form-group">
+                        <textarea class="form-control message" name='comment' placeholder="Comment"></textarea>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <input type="text" class="form-control" id="name" name='name' placeholder="Name">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <input type="email" class="form-control" id="email" name='email' placeholder="Email">
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <input type="text" class="form-control" name='website' id="website" placeholder="Website (optional)">
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <input type="hidden" class="form-control" name='id' value="{{post.id}}" id="website" placeholder="Website (optional)">
+                    </div>
+
+                    <div class="col-md-12"><button class="btn btn_three btn_hover f_size_15 f_500" type="submit">Post Comment</button></div>
+                </form>
+
+            </div>
+
+            
+
+                <!-- SideBar -->
+
+            <div class="col-lg-4">
+                <div class="blog-sidebar">
+                    <div class="widget sidebar_widget widget_search">
+
+                        <form action="{% url 'search' %}" class="search-form input-group" method='get'> 
+                            <input type="search" class="form-control widget_input" name='keyword' placeholder="Search Here">
+                            <button type="submit"><i class="ti-search"></i></button>
+                        </form>
+
+                    </div>
+                    <div class="widget sidebar_widget widget_recent_post mt_60">
+                        <div class="widget_title">
+                            <h3 class="f_p f_size_20 t_color3">Recent posts</h3>
+                            <div class="border_bottom"></div>
+                        </div>
+
+                        {% for post in  recent_posts%}
+                          
+                       
+                        <div class="media post_item">
+                            <a href="/post/{{post.title}}">
+                            <img src="{{post.thumbnail.url}}" style="margin-left:5%;" class='img-responsive img-fluid img-thumbnail' height="75" width="200" alt=""></a>
+                            <div class="media-body">
+                                <a href="/post/{{post.title}}">
+                                    <h3 class="f_size_16 f_p f_400"><b>Desc :</b> {{post.title}}</h3>
+                                </a>
+                                <div class="entry_post_info">
+                                    By: <a href="#">{{post.user}}</a>
+                                    <a href="#">{{post.posted_at}}</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+                    <div class="widget sidebar_widget widget_categorie mt_60">
+                        <div class="widget_title">
+                            <h3 class="f_p f_size_20 t_color3">Categories</h3>
+                            <div class="border_bottom"></div>
+                        </div>
+                        <ul class="list-unstyled">
+                            {% for category in categories %}
+
+                            
+                            <li> <a href="/category/{{category.name}}"><span>{{category.name}}</span><em></em></a> </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+</main>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="{% static 'js/jquery-3.2.1.min.js.download' %}"></script>
+<script src="{% static 'js/propper.js.download' %}"></script>
+<script src="{% static 'js/bootstrap.min.js.download' %}"></script>
+<script src="{% static 'js/wow.min.js.download' %}"></script>
+<script src="{% static 'js/jquery.parallax-scroll.js.download' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js.download' %}"></script>
+<script src="{% static 'js/imagesloaded.pkgd.min.js.download' %}"></script>
+<script src="{% static 'js/isotope-min.js.download' %}"></script>
+<script src="{% static 'js/jquery.magnific-popup.min.js.download' %}"></script>
+<script src="{% static 'js/jquery.nice-select.min.js.download' %}"></script>
+<script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js.download' %}"></script>
+<script src="{% static 'js/plugins.js.download' %}"></script>
+<script src="{% static 'js/slick.js.download' %}"></script>
+<script src="{% static 'js/main.js.download' %}"></script>
+{% endblock %}

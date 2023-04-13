@@ -8,3 +8,4 @@ psycopg2-binary
 sqlparse
 typing_extensions
 whitenoise
+django-ckeditor

@@ -62,9 +62,9 @@ def login_view(request):
             login(request, user)
             obj = User.objects.get(username=username)
             if obj.user_status == "Doctor":
-                return redirect('doctor_dashboard')
+                return redirect('doctor_profile')
             elif(obj.user_status == "Patient"):
-                return redirect('patient_dashboard')
+                return redirect('patient_profile')
         else:
             return render(request, 'users/login.html', context={'errorlogin': 1})
 
