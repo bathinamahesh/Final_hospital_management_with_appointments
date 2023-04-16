@@ -1,0 +1,112 @@
+
+{% extends 'doctor/doctor_main.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_last.css' %}">
+<link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+<main> 
+            <section class="recent">
+                <div class="table-div">
+                    
+                    <div class="col-md-7 col-lg-8 col-xl-9" style="width:80%;">
+						<div class="appointments">
+                        <!-- Appointment List -->
+                        {% for appointment in appointments %}
+                        <div class="appointment-list" style="width:80%;">
+                            <div class="profile-info-widget">
+                                <a href="patient-profile.html" class="booking-doc-img">
+                                    <img src="{% static 'img/def.jpeg' %}" alt="User Image">
+                                </a>
+                                <div class="profile-det-info">
+                                    <h3 style="font-size:19px;"><a href="#" style="text-decoration:none;">Patient name &nbsp;:&nbsp;{{ appointment.patient }}</a></h3>
+                                    <div class="patient-details">
+                                        <h4 style="font-size:16px;"><i class="bi bi-clock-fill"></i>&nbsp;&nbsp;  {{ appointment.start_date }}&nbsp;,&nbsp;{{ appointment.start_time }}</h4>
+                                        <h4 style="font-size:16px;"><i class="bi bi-hourglass-bottom"></i>&nbsp;&nbsp; {{ appointment.end_date }}&nbsp;,&nbsp;{{ appointment.end_time }}</h4>
+                                        <h4 style="font-size:16px;"><i class="bi bi-window-fullscreen"></i>&nbsp;&nbsp; {{ appointment.appointment }}</h4>
+
+                                        <!--<h4 class="mb-0"><i class="bi bi-telephone-fill"></i>&nbsp; +1 923 782 4575</h4>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="appointment-action">
+                                <a href="#" class="btn btn-sm bg-info-light" data-bs-toggle="modal" data-bs-target="#{{ appointment.patient }}" >
+                                    <i class="bi bi-eye-fill"></i> View
+                                </a>
+                                <!--<a href="javascript:void(0);" class="btn btn-sm bg-success-light">
+                                    <i class="bi bi-check-circle-fill"></i> Accept
+                                </a>
+                                <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
+                                    <i class="bi bi-check-circle-fill"></i> Cancel
+                                </a>-->
+                            </div>
+                        
+                        <!-- /Appointment List -->
+                        <!-- Appointment Details Modal -->
+		<div class="modal fade custom-modal" id="{{ appointment.patient }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Appointment Details</h5>
+						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<ul class="info-details">
+							<li>
+								<div class="details-header">
+									<div class="row">
+										<div class="col-md-6">
+											<span class="title">#APT0001</span>
+											<span class="text">&nbsp;&nbsp;  {{ appointment.start_date }}&nbsp;,&nbsp;{{ appointment.start_time }}</span>
+										</div>
+										<div class="col-md-6">
+											<div class="text-right">
+												<button type="button" class="btn bg-success-light btn-sm" id="topup_status">Completed</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li>
+								<span class="title">Status:</span>
+								<span class="text">Completed</span>
+							</li>
+							<li>
+								<span class="title">Confirm Date:</span>
+								<span class="text">{{ appointment.start_date }}</span>
+							</li>
+							<li>
+								<span class="title">Requirement : </span>
+								<span class="text">{{ appointment.appointment }}</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Appointment Details Modal -->
+    </div>
+    {% endfor %}
+             </div>
+                
+            </div>
+        </section>
+    </main>
+    	
+        <script
+            src="https://code.jquery.com/jquery-3.6.4.min.js"
+            integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+            crossorigin="anonymous">
+    </script>
+
+        
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+		
+    <!-- Bootstrap Core JS -->
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock  %}
+                

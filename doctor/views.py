@@ -4,6 +4,12 @@ User = get_user_model()
 from django.contrib.auth.decorators import login_required
 from .models import Post,Category,Comment
 from django.core.paginator import Paginator
+import pytz
+from datetime import datetime, timedelta
+##for Google Calender API
+from apiclient.discovery import build
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 # Create your views here.
 @login_required(login_url='/login')
@@ -206,3 +212,70 @@ def modify(request,pid):
     }
 
     return render(request,"doctor/forsubmission.html",context)
+def view_appointments(request):
+    SCOPES = ['https://www.googleapis.com/auth/calendar']
+    creds=Credentials.from_authorized_user_file('token.json',SCOPES)
+    service = build("calendar", "v3", credentials=creds)
+    result=get_aevents_by_summary(service,str(request.user.username))
+    #print(result)
+    dict_list=[]
+    for sublist in result:
+        dictionary = {'doctor': sublist[0],
+                      'patient': sublist[1],
+                      'appointment': sublist[2],
+                      'start_date': sublist[3],
+                      'start_time': sublist[4],
+                      'end_date': sublist[5],
+                      'end_time': sublist[6],
+                    }
+        dict_list.append(dictionary)
+    context_dict = {'appointments': dict_list}
+    return render(request,"doctor/viewappointments.html",context_dict)
+
+
+
+def get_aevents_by_summary(service,dname):
+    calendar_list = service.calendarList().list().execute()
+    now = datetime.now(pytz.timezone('Asia/Kolkata'))
+    #now=now+timedelta(hours=1,minutes=30)
+    time_max = now + timedelta(days=7)
+    start_time = now.astimezone(pytz.utc)
+    end_time = time_max.astimezone(pytz.utc)
+    l=[]
+    ####Finding Calender ID
+    calendar_id=""
+    for calendar in calendar_list['items']:
+        if calendar['summary'] ==dname:
+                calendar_id = calendar['id']
+                break
+    # Loop through each calendar and fetch the events that match the specified summary
+    try:
+            events_result = service.events().list(calendarId=calendar_id, timeMin=start_time.isoformat(), timeMax=end_time.isoformat(), singleEvents=True, orderBy='startTime').execute()
+            events = events_result.get('items', [])
+            if not events:
+                pass
+            else:
+                for event in events:
+                        new=[]
+                        # Convert the starttime object to a string in AM/PM format
+                        start = event['start']['dateTime']
+                        dt = datetime.fromisoformat(start)
+                        start=str(dt.strftime('%d'))+" "+str(dt.strftime('%b'))+" "+str(dt.strftime('%Y'))
+                        start_time=dt.strftime('%I:%M %p')
+                        # Convert the endttime object to a string in AM/PM format
+                        end = event['end']['dateTime']
+                        dt = datetime.fromisoformat(end)
+                        end=start=str(dt.strftime('%d'))+" "+str(dt.strftime('%b'))+" "+str(dt.strftime('%Y'))
+                        end_time=dt.strftime('%I:%M %p')
+                        new.append(str(calendar['summary']))
+                        new.append(event['location'])
+                        new.append(event['description'])
+                        new.append(start)
+                        new.append(start_time)
+                        new.append(end)
+                        new.append(end_time)
+                        l.append(new)
+    except Exception as e:
+            print("hello" ,e)
+            pass
+    return l

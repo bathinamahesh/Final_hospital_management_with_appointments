@@ -1,0 +1,65 @@
+{% extends 'patient/patient_main.html' %}
+{% load static %}
+
+{% block content %}
+<main>
+    <h2 class="dash-title">Appointment Booking confirm</h2>
+    <section class="recent">
+        <div class="table-div">
+            <div class="table-card">
+                <div class="container mt-5" >
+                    <div class="row">
+                        <div class="col-md-10 offset-md-0.5 border p-4 shadow bg-dark" style="margin-top:-4.5%;width:100%;border-radius:20px;">
+                            <div class="col-12" style="color:black;">
+                                <h3  style="font-color:green;">Doctor Name : {{ doctorname }}</h3>
+                            </div>
+                            <form method="POST" class="needs-validation" nonalidate="" autocomplete="off" enctype="multipart/form-data">{% csrf_token %}
+                                <div class="row g-3">
+                                    <input type="text" class="form-control" placeholder="First Name" name="fname" id="ft-name" value="{{ userdetails.first_name }}" style="display:none;">
+                                    <input type="text" class="form-control" placeholder="First Name" name="lname" id="lt-name" value="{{ userdetails.last_name }}" style="display:none;">
+                                    <input type="text" class="form-control" placeholder="First Name" name="doctorname" id="ltdfd-name" value="{{ doctorname }}" style="display:none;">
+                                    <div class="col-md-6">
+                                        <label for="first-name" style="color:#e6f5f1;">First Name </label><br>
+                                        <input type="text" class="form-control" placeholder="First Name" name="foname" id="first-name" value="{{ userdetails.first_name }}" disabled>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="last-name" style="color:#e6f5f1;">Last Name </label><br>
+                                        <input type="text" class="form-control" id="last-name" placeholder="Last Name" name="loname" value="{{ userdetails.last_name }}" disabled>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="dates" style="color:#e6f5f1;">Select Date </label><br>
+                                        <input type="date" class="form-control" id="dates" name="fdate" placeholder="Enter Date" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="times" style="color:#e6f5f1;">Select Time </label><br>
+                                        <input type="time" class="form-control" id="times" name="ftime" placeholder="Enter Time" required>
+                                    </div>
+                                    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                                        <label for="spec" style="color:#e6f5f1;">Required Speciality  : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label><br>
+                                        <input type="text" class="form-control" placeholder="Required Speciality" name="frequired" id="spec" style="width:81.5%;" required>
+                                    </div>
+                                    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                                        <label for="message" style="color:#e6f5f1;">Request Message &nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label><br>
+                                        <textarea class="form-control" id="message" style="width:88.5%;margin-left:2%;" name='fmessage' placeholder="Message ( optional )"></textarea>
+                                    </div>
+                                    <div class="col-12 mt-5">                        
+                                        <button type="submit" class="btn btn-success float-end">Book Appointment</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% if eventnotconfirm is 1 %}
+                    <script language="JavaScript">alert('Try Again in another Slot :(')</script>
+    {% endif %}
+</main>
+<script
+src="https://code.jquery.com/jquery-3.6.4.min.js"
+integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+crossorigin="anonymous">
+</script>
+{% endblock %}

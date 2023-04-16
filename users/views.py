@@ -8,6 +8,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+##for Google Calender API
+from apiclient.discovery import build
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+
+
 User = get_user_model()
 
 
@@ -33,6 +39,19 @@ def register(request):
         address+=request.POST.get('state')
         address+=" , "
         address+=request.POST.get('pincode')
+        ##Assign Calender
+        if(user_status == "Doctor"):
+            SCOPES = ['https://www.googleapis.com/auth/calendar']
+            creds=Credentials.from_authorized_user_file('token.json',SCOPES)
+            service = build("calendar", "v3", credentials=creds)
+            calendar = {
+                'summary':username ,
+                'timeZone': 'Asia/Kolkata',
+            }
+            created_calendar = service.calendars().insert(body=calendar).execute()
+            print("\n\n Created Calender Successfully with calender id :",created_calendar['id'])
+
+        #####
         variable = User.objects.filter(username=username)
         if(len(list(variable)) == 0 and str(password)==str(confirm_password)):
             user = User.objects.create_user(user_status=user_status,first_name=first_name,last_name=last_name,profile_pic = profile_pic,username = username,
@@ -42,6 +61,7 @@ def register(request):
                     confirm_password=confirm_password,
                     address =address,
                 )
+            
             user.save()
             return redirect('login')
         else:

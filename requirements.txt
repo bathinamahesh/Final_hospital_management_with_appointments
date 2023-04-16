@@ -9,3 +9,6 @@ sqlparse
 typing_extensions
 whitenoise
 django-ckeditor
+google-api-python-client
+google_auth_oauthlib
+pytz

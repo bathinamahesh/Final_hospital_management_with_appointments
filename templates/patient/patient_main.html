@@ -53,6 +53,20 @@
                         <span>Blogs</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{% url 'patient_book_appointment' %}">
+                        <i class="bi bi-file-medical-fill"></i>
+                        <span>&nbsp;&nbsp;Book appoinments</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'patient_my_appointments' %}">
+                        <i class="bi bi-journals"></i> 
+                        <span>&nbsp;&nbsp;My appoinments</span>
+                    </a>
+                </li>
+                
+                
                 <br><br><br><br>
                 <li>
                     <a href="{% url 'logout' %}"  data-bs-toggle="tooltip" data-bs-placement="right" title="logout" >

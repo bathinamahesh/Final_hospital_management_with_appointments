@@ -1,0 +1,79 @@
+{% extends 'patient/patient_main.html' %}
+{% load static %}
+
+{% block content %}
+<main>
+    <section class="recent">
+      <h2 class="dash-title">Appointment Details</h2>
+        <div class="table-div" style="width:69%;">
+            <div class="table-card" style="width:100%;">    
+                <form action="/patient_my_appointments/">
+                <div class="col-md-12">
+                    <div class="card mb-3">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0">Doctor Name</h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                            {{ appointments.doctor }}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0">Your Name</h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                            {{ appointments.patient }}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0">Required Facility</h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                            {{ appointments.appointment }}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0">Date : </h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                            {{ appointments.start_date }}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                              <h6 class="mb-0">Start Time : </h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <span class="d-block text-info" style="font-size:16px;">{{ appointments.start_time }}</span>
+                            </div>
+                          </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                              <h6 class="mb-0">End Time : </h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <span class="d-block text-info" style="font-size:16px;">{{ appointments.end_time }}</span>
+                            </div>
+                          </div>
+                        <div class="row">
+                          <div class="col-sm-12" style="margin-top:3%;margin-left:15%;width:50px;">
+                            <input class="btn btn-success" type="submit" value="&nbsp;&nbsp;&nbsp;Ok&nbsp;&nbsp;&nbsp;" >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
